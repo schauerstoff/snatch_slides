@@ -31,7 +31,7 @@ from selenium.webdriver import ActionChains
 # get the id of sth called "<video id=".." ..>, not easily found by inspector, open div boxes until found.
 # change paths, ids here
 path = "C:\Program Files (x86)\chromedriver.exe"
-
+link = 'https://videoakademie.ko-ld.de/Panopto/Pages/Viewer.aspx?id=20dc555a-84e3-4ca8-b520-abca00eeb191&start=undefined'
 # region SETUP
 
 
@@ -44,7 +44,7 @@ options.add_experimental_option('excludeSwitches', ['enable-logging'])
 driver = webdriver.Chrome(path, options=options)
 driver.set_window_position(0, 0)
 driver.set_window_size(1024, 768)
-driver.get('https://videoakademie.ko-ld.de/Panopto/Pages/Viewer.aspx?id=20dc555a-84e3-4ca8-b520-abca00eeb191&start=undefined')
+driver.get(link)
 # Start Playing the Video at 2x speed
 play = driver.find_element_by_id('playButton')
 time.sleep(2)
@@ -54,15 +54,17 @@ speed = driver.find_element_by_id('playSpeedButton')
 ActionChains(driver).click(speed).perform()
 fastest = driver.find_element_by_id('Fastest')
 ActionChains(driver).click(fastest).perform()
+ffw = driver.find_element_by_id('quickFastForwardButton')
+
 
 element = driver.find_element_by_id('primaryVideo')
 document = Document()
-#seitenraender minimal machen!!
+# seitenraender minimal machen!!
 sections = document.sections
 for section in sections:
     section.top_margin = Inches(0)
     section.bottom_margin = Inches(0)
-    section.left_margin =Inches(0)
+    section.left_margin = Inches(0)
     section.right_margin = Inches(0)
 
 # Paste in Word example
@@ -127,15 +129,21 @@ def compare_images(img1, img2):
 # get video length, while 1/2 diese zeit noch nicht vergangen ist, do these??
 
 
-time.sleep(5)
+time.sleep(2)
 # init prev
 element.screenshot('sc.png')
 prevprev = rgb2gray(mpimg.imread('sc.png'))  # vgl mit letzten beiden bildern!
-time.sleep(5)
+time.sleep(2)
 element.screenshot('sc.png')
 prev = rgb2gray(mpimg.imread('sc.png'))
-while True:
-    time.sleep(5)
+
+# timeRemaining
+remaining = driver.find_element_by_id('timeRemaining')
+timer = remaining.text
+print(timer)  # -1:07:14
+while (timer != '0:00'):
+    timer = remaining.text
+
     element.screenshot('sc.png')
 
     tmp = rgb2gray(mpimg.imread('sc.png'))
@@ -146,21 +154,22 @@ while True:
     # Bildwechsel
     # Manhattan norm: 14643062.75674185
     # Zero norm: 160057.0
-    if((n_m > 1000000) & (n_m1 > 1000000)):  # threshold not quite gud yet (n_0 > 67000) & (
+    if((n_m > 1000000) & (n_m1 > 1000000)):  # threshold
         print("jaa")
         document.add_picture('sc.png', width=Inches(6.0))
         document.save('vl_am_date.docx')
+        time.sleep(2)  # vorher 5
     else:
         # press 10sek vor button
-        pass
+        ActionChains(driver).click(ffw).perform()
     prevprev = prev
     prev = tmp
 
-#abfangen:
-#ValueError: operands could not be broadcast together with shapes (502,892) (880,1564)
-#wenn man groesse des browsers nachtraeglich aendert
+# abfangen:
+# ValueError: operands could not be broadcast together with shapes (502,892) (880,1564)
+# wenn man groesse des browsers nachtraeglich aendert
 
-# driver.quit()
+driver.quit()
 
 # img = mpimg.imread('screenshot1.png')
 # s1 = rgb2gray(img)
