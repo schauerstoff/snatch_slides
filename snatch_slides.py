@@ -57,7 +57,13 @@ ActionChains(driver).click(fastest).perform()
 
 element = driver.find_element_by_id('primaryVideo')
 document = Document()
-
+#seitenraender minimal machen!!
+sections = document.sections
+for section in sections:
+    section.top_margin = Inches(0)
+    section.bottom_margin = Inches(0)
+    section.left_margin =Inches(0)
+    section.right_margin = Inches(0)
 
 # Paste in Word example
 # document = Document()
@@ -121,10 +127,12 @@ def compare_images(img1, img2):
 # get video length, while 1/2 diese zeit noch nicht vergangen ist, do these??
 
 
-time.sleep(10)
+time.sleep(5)
 # init prev
 element.screenshot('sc.png')
-prevprev = None  # vgl mit letzten beiden bildern!
+prevprev = rgb2gray(mpimg.imread('sc.png'))  # vgl mit letzten beiden bildern!
+time.sleep(5)
+element.screenshot('sc.png')
 prev = rgb2gray(mpimg.imread('sc.png'))
 while True:
     time.sleep(5)
@@ -132,12 +140,25 @@ while True:
 
     tmp = rgb2gray(mpimg.imread('sc.png'))
     n_m, n_0 = compare_images(prev, tmp)
-    print(n_0)
-    if(n_0 > 100000):  # threshold not quite gud yet
+    n_m1, n_01 = compare_images(prevprev, tmp)
+    print("Manhattan norm:", n_m)
+    print("Zero norm:", n_0)
+    # Bildwechsel
+    # Manhattan norm: 14643062.75674185
+    # Zero norm: 160057.0
+    if((n_m > 1000000) & (n_m1 > 1000000)):  # threshold not quite gud yet (n_0 > 67000) & (
         print("jaa")
         document.add_picture('sc.png', width=Inches(6.0))
         document.save('vl_am_date.docx')
+    else:
+        # press 10sek vor button
+        pass
+    prevprev = prev
     prev = tmp
+
+#abfangen:
+#ValueError: operands could not be broadcast together with shapes (502,892) (880,1564)
+#wenn man groesse des browsers nachtraeglich aendert
 
 # driver.quit()
 
