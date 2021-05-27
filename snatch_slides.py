@@ -56,14 +56,14 @@ class Browser:
         self.ffw = self.driver.find_element_by_id(ffw_id)
 
         # start playing muted video at 2x speed
+        mute = self.driver.find_element_by_id(mute_id)
+        ActionChains(self.driver).click(mute).perform()
         play = self.driver.find_element_by_id(play_id)
         ActionChains(self.driver).click(play).perform()
         speed = self.driver.find_element_by_id(speed_id)
         ActionChains(self.driver).click(speed).perform()
         fastest = self.driver.find_element_by_id(speed_setting_id)
         ActionChains(self.driver).click(fastest).perform()
-        mute = self.driver.find_element_by_id(mute_id)
-        ActionChains(self.driver).click(mute).perform()
 
 
 class Word:
@@ -116,12 +116,13 @@ def main():
             print("new slide")
             word.document.add_picture('sc.png', width=Inches(6.0))
             word.document.save(title)
+
+            # only reset these when new slide is found
+            prevprev = prev
+            prev = tmp
             time.sleep(2)  # vorher 5
         else:
             ActionChains(chrome.driver).click(chrome.ffw).perform()
-
-        prevprev = prev
-        prev = tmp
 
     chrome.driver.quit()
 
