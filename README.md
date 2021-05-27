@@ -1,7 +1,5 @@
 # snatch_slides
 
-my image processing professor doesn't share his slides so I used image processing to snatch them from the uploaded video - top 10 anime comebacks.
-
 This script automates the tiring process skipping through the lecture and taking a screenshot everytime a new slide appears.
 If a slide is 'new' is determined by simple image processing: Save preceding slide, take a new screenshot, subtract the images. 
 Then sum all the absolute values of these differences and compare them to a threshold. The more different the images are, the bigger the sum will be.
