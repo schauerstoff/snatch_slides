@@ -1,0 +1,12 @@
+# NCC too slow
+
+    # Values for same picture, only moved cursor
+    # Manhattan norm: 8325.966396323738
+    # Zero norm: 138.0
+
+    # Values for different pictures
+    # Manhattan norm: 9913029.394698184
+    # Zero norm: 158730.0
+    # Bildwechsel
+    # Manhattan norm: 14643062.75674185
+    # Zero norm: 160057.0
