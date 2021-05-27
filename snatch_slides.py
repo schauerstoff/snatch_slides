@@ -8,16 +8,10 @@ import time
 import datetime
 import image_util as iu
 
-#!IMPORTANT, DOESNT WORK IF NOT DONE:
-# #Einstellungen > System > Anzeige > Skalierung und Anordnung: Groesse von Text und ...: 100% instead of 125%
-# wenn Screenshots sonst rechts abgeschnitten sind!
-
-# This setup is for panopto player
-# get the id of sth called "<video id=".." ..>, not easily found by inspector, open div boxes until found.
-# change paths, ids here
+# path to chromedriver, link to lecture
 path = "C:\Program Files (x86)\chromedriver.exe"
 link = 'https://videoakademie.ko-ld.de/Panopto/Pages/Viewer.aspx?id=20dc555a-84e3-4ca8-b520-abca00eeb191&start=undefined'
-# CSS IDs
+# CSS IDs setup for panopto player
 video_id = 'primaryVideo'
 ffw_id = 'quickFastForwardButton'
 play_id = 'playButton'
@@ -82,10 +76,6 @@ class Word:
 # endregion
 
 
-# abfangen:
-# ValueError: operands could not be broadcast together with shapes (502,892) (880,1564)
-# wenn man groesse des browsers nachtraeglich aendert
-
 def main():
     chrome = Browser()
     word = Word()
@@ -106,12 +96,13 @@ def main():
         timer = remaining.text
 
         chrome.video.screenshot('sc.png')
-
         tmp = iu.rgb_to_gray(iu.load_image('sc.png'))
         n_m_pp = iu.compare_images_manhatten(prevprev, tmp)
         n_m_p = iu.compare_images_manhatten(prev, tmp)
+
         print("Manhattan norm:", n_m_p)
         print("Manhattan norm:", n_m_pp)
+
         if((n_m_p > thres) & (n_m_pp > thres)):
             print("new slide")
             word.document.add_picture('sc.png', width=Inches(6.0))
