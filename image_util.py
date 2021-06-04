@@ -25,6 +25,7 @@ def save_image(npdata, outfilename):
     img.save(outfilename)
 
 
+# Grauwert Spreizung
 def normalize(arr):
     rng = arr.max()-arr.min()
     amin = arr.min()

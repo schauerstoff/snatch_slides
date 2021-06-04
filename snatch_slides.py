@@ -10,7 +10,7 @@ import image_util as iu
 
 # path to chromedriver, link to lecture
 path = "C:\Program Files (x86)\chromedriver.exe"
-link = 'https://videoakademie.ko-ld.de/Panopto/Pages/Viewer.aspx?id=20dc555a-84e3-4ca8-b520-abca00eeb191&start=undefined'
+link = 'https://videoakademie.ko-ld.de/Panopto/Pages/Viewer.aspx?id=371ba24f-952a-426f-9d61-abcf00bd7e0b&start=undefined'
 # CSS IDs setup for panopto player
 video_id = 'primaryVideo'
 ffw_id = 'quickFastForwardButton'
@@ -100,8 +100,8 @@ def main():
         n_m_pp = iu.compare_images_manhatten(prevprev, tmp)
         n_m_p = iu.compare_images_manhatten(prev, tmp)
 
-        print("Manhattan norm:", n_m_p)
-        print("Manhattan norm:", n_m_pp)
+        # print("Manhattan norm:", n_m_p/thres)
+        # print("Manhattan norm:", n_m_pp/thres)
 
         if((n_m_p > thres) & (n_m_pp > thres)):
             print("new slide")
@@ -111,7 +111,7 @@ def main():
             # only reset these when new slide is found
             prevprev = prev
             prev = tmp
-            time.sleep(2)  # vorher 5
+            # time.sleep(2)  # vorher 5
         else:
             ActionChains(chrome.driver).click(chrome.ffw).perform()
 
