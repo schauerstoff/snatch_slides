@@ -1,9 +1,9 @@
 # snatch_slides
 
 This script automates the tiring process skipping through the lecture and taking a screenshot everytime a new slide appears.
-If a slide is 'new' is determined by simple image processing: Save preceding slide, take a new screenshot, subtract the images. 
+If a slide is 'new' is determined by simple image processing: Save preceding slide, take a new screenshot, subtract the images pixelwise. 
 Then sum all the absolute values of these differences and compare them to a threshold. The more different the images are, the bigger the sum will be.
-For the set resolution, 1.000.000 seems to work.
+For the set resolution and style of slides, 1.000.000 seems to work as a threshold.
 [Save two previous slides if there is a lot of skipping back and forth in your lecture.]
 
 By default, this script will work for Panopto player, but one should be able to use it with any sort of player as long as the CSS IDs for
