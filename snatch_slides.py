@@ -10,7 +10,7 @@ import image_util as iu
 
 # path to chromedriver, link to lecture
 path = "C:\Program Files (x86)\chromedriver.exe"
-link = 'https://videoakademie.ko-ld.de/Panopto/Pages/Viewer.aspx?id=371ba24f-952a-426f-9d61-abcf00bd7e0b&start=undefined'
+link = 'your link'
 # CSS IDs setup for panopto player
 video_id = 'primaryVideo'
 ffw_id = 'quickFastForwardButton'
